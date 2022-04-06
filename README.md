@@ -44,44 +44,48 @@ module "amazon_linux_2" {
 ## Complete example with a new VPC, SSM instance profile creation and an EC2 instance
 
 ```hcl
+# Create a VPC
 module "vpc" {
   source = "terraform-aws-modules/vpc/aws"
 
-  name = "my-vpc"
-  cidr = "10.0.0.0/16"
-  azs             = ["ap-southeast-2a", "ap-southeast-2b"]
-  private_subnets = ["10.0.1.0/24", "10.0.2.0/24"]
-  public_subnets  = ["10.0.101.0/24", "10.0.102.0/24"]
+  name                 = "my-vpc"
+  cidr                 = "10.0.0.0/16"
+  azs                  = ["ap-southeast-2a", "ap-southeast-2b"]
+  private_subnets      = ["10.0.1.0/24", "10.0.2.0/24"]
+  public_subnets       = ["10.0.101.0/24", "10.0.102.0/24"]
   enable_dns_hostnames = true
-  enable_dns_support = true
+  enable_dns_support   = true
 
   tags = {
     Name = "my-vpc"
   }
 }
 
+# Create IAM role and IAM instance profile for SSM
 module "ssm_instance_profile" {
   source  = "bayupw/ssm-instance-profile/aws"
   version = "1.0.0"
 }
 
+# Create VPC Endpoints for SSM in private subnets
 module "ssm_vpc_endpoint" {
   source  = "bayupw/ssm-vpc-endpoint/aws"
   version = "1.0.0"
 
-  vpc_id = module.vpc.vpc_id
-  subnet_id = [for private_subnet in module.vpc.private_subnets]
+  vpc_id         = module.vpc.vpc_id
+  vpc_subnet_ids = module.vpc.private_subnets
 }
 
+# Launch EC2 instances in private subnets
 module "amazon_linux_2" {
-  for_each = module.vpc.private_subnets
+  for_each = toset(module.vpc.private_subnets)
 
   source  = "bayupw/amazon-linux-2/aws"
   version = "1.0.0"
 
-  vpc_id = module.vpc.vpc_id
+  vpc_id    = module.vpc.vpc_id
   subnet_id = each.key
-  
+
   iam_instance_profile = module.ssm_instance_profile.aws_iam_instance_profile
 }
 ```
