@@ -9,7 +9,7 @@ module "ssm_vpc_endpoint" {
   source  = "bayupw/ssm-vpc-endpoint/aws"
   version = "1.0.0"
 
-  vpc_id = "vpc-0a1b2c3d4e"
+  vpc_id    = "vpc-0a1b2c3d4e"
   subnet_id = ["subnet-0a1b2c3d4e"]
 }
 ```
@@ -26,7 +26,7 @@ module "ssm_vpc_endpoint" {
   source  = "bayupw/ssm-vpc-endpoint/aws"
   version = "1.0.0"
 
-  vpc_id = "vpc-0a1b2c3d4e"
+  vpc_id    = "vpc-0a1b2c3d4e"
   subnet_id = ["subnet-0a1b2c3d4e"]
 }
 
@@ -34,9 +34,8 @@ module "amazon_linux_2" {
   source  = "bayupw/amazon-linux-2/aws"
   version = "1.0.0"
 
-  vpc_id = "vpc-0a1b2c3d4e"
-  subnet_id = "subnet-0a1b2c3d4e"
-  
+  vpc_id               = "vpc-0a1b2c3d4e"
+  subnet_id            = "subnet-0a1b2c3d4e"
   iam_instance_profile = module.ssm_instance_profile.aws_iam_instance_profile
 }
 ```
@@ -83,9 +82,8 @@ module "amazon_linux_2" {
   source  = "bayupw/amazon-linux-2/aws"
   version = "1.0.0"
 
-  vpc_id    = module.vpc.vpc_id
-  subnet_id = each.key
-
+  vpc_id               = module.vpc.vpc_id
+  subnet_id            = each.key
   iam_instance_profile = module.ssm_instance_profile.aws_iam_instance_profile
 }
 ```
