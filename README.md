@@ -10,7 +10,7 @@ module "ssm_vpc_endpoint" {
   version = "1.0.0"
 
   vpc_id    = "vpc-0a1b2c3d4e"
-  subnet_id = ["subnet-0a1b2c3d4e"]
+  vpc_subnet_ids = ["subnet-0a1b2c3d4e"]
 }
 ```
 
@@ -27,7 +27,7 @@ module "ssm_vpc_endpoint" {
   version = "1.0.0"
 
   vpc_id    = "vpc-0a1b2c3d4e"
-  subnet_id = ["subnet-0a1b2c3d4e"]
+  vpc_subnet_ids = ["subnet-0a1b2c3d4e"]
 }
 
 module "amazon_linux_2" {
@@ -75,15 +75,13 @@ module "ssm_vpc_endpoint" {
   vpc_subnet_ids = module.vpc.private_subnets
 }
 
-# Launch EC2 instances in private subnets
+# Launch EC2 instances in private subnet
 module "amazon_linux_2" {
-  for_each = toset(module.vpc.private_subnets)
-
   source  = "bayupw/amazon-linux-2/aws"
   version = "1.0.0"
 
   vpc_id               = module.vpc.vpc_id
-  subnet_id            = each.key
+  subnet_id            = module.vpc.private_subnets[0]
   iam_instance_profile = module.ssm_instance_profile.aws_iam_instance_profile
 }
 ```
