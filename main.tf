@@ -51,7 +51,7 @@ resource "aws_vpc_endpoint" "ssm_endpoint" {
   vpc_endpoint_type   = "Interface"
   subnet_ids          = var.vpc_subnet_ids
   security_group_ids  = [aws_security_group.this.id]
-  private_dns_enabled = true
+  private_dns_enabled = var.private_dns_enabled
 
   tags = {
     Name = "${try(data.aws_vpc.this.tags.Name, var.vpc_id)}-ssm"
@@ -65,7 +65,7 @@ resource "aws_vpc_endpoint" "ec2_messages_endpoint" {
   vpc_endpoint_type   = "Interface"
   subnet_ids          = var.vpc_subnet_ids
   security_group_ids  = [aws_security_group.this.id]
-  private_dns_enabled = true
+  private_dns_enabled = var.private_dns_enabled
 
   tags = {
     Name = "${try(data.aws_vpc.this.tags.Name, var.vpc_id)}-ec2messages"
@@ -79,7 +79,7 @@ resource "aws_vpc_endpoint" "ssm_messages_endpoint" {
   vpc_endpoint_type   = "Interface"
   subnet_ids          = var.vpc_subnet_ids
   security_group_ids  = [aws_security_group.this.id]
-  private_dns_enabled = true
+  private_dns_enabled = var.private_dns_enabled
 
   tags = {
     Name = "${try(data.aws_vpc.this.tags.Name, var.vpc_id)}-ssmmessages"
@@ -104,7 +104,7 @@ resource "aws_vpc_endpoint" "ec2_endpoint" {
   vpc_endpoint_type   = "Interface"
   subnet_ids          = var.vpc_subnet_ids
   security_group_ids  = [aws_security_group.this.id]
-  private_dns_enabled = true
+  private_dns_enabled = var.private_dns_enabled
 
   tags = {
     Name = "${try(data.aws_vpc.this.tags.Name, var.vpc_id)}-ec2"
@@ -120,7 +120,7 @@ resource "aws_vpc_endpoint" "kms_endpoint" {
   vpc_endpoint_type   = "Interface"
   subnet_ids          = var.vpc_subnet_ids
   security_group_ids  = [aws_security_group.this.id]
-  private_dns_enabled = true
+  private_dns_enabled = var.private_dns_enabled
 
   tags = {
     Name = "${try(data.aws_vpc.this.tags.Name, var.vpc_id)}-kms"
@@ -136,7 +136,7 @@ resource "aws_vpc_endpoint" "logs_endpoint" {
   vpc_endpoint_type   = "Interface"
   subnet_ids          = var.vpc_subnet_ids
   security_group_ids  = [aws_security_group.this.id]
-  private_dns_enabled = true
+  private_dns_enabled = var.private_dns_enabled
   
   tags = {
     Name = "${try(data.aws_vpc.this.tags.Name, var.vpc_id)}-logs"

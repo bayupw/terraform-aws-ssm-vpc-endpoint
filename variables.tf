@@ -53,6 +53,13 @@ variable "create_logs_endpoint" {
   default     = false
 }
 
+# Boolean to enable 
+variable "private_dns_enabled" {
+  description = "Boolean to associate a private hosted zone with the specified VPC"
+  type        = bool
+  default     = true
+}
+
 # when using custom_ingress_cidrs, local.rfc1918 will be ignored
 variable "custom_ingress_cidrs" {
   description = "List of IP addreses/network to be allowed in the ingress security group"
