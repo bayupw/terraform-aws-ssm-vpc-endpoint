@@ -9,7 +9,7 @@ resource "random_string" "this" {
   count = var.random_suffix ? 1 : 0
 
   length  = var.random_string_length
-  number  = true
+  numeric = true
   special = false
   upper   = false
 }
@@ -57,7 +57,7 @@ resource "aws_vpc_endpoint" "ssm_endpoint" {
     Name = "${try(data.aws_vpc.this.tags.Name, var.vpc_id)}-ssm"
   }
 }
- 
+
 # VPC endpoint for SSM Agent to make calls to the Systems Manager service
 resource "aws_vpc_endpoint" "ec2_messages_endpoint" {
   vpc_id              = var.vpc_id
@@ -137,7 +137,7 @@ resource "aws_vpc_endpoint" "logs_endpoint" {
   subnet_ids          = var.vpc_subnet_ids
   security_group_ids  = [aws_security_group.this.id]
   private_dns_enabled = var.private_dns_enabled
-  
+
   tags = {
     Name = "${try(data.aws_vpc.this.tags.Name, var.vpc_id)}-logs"
   }
